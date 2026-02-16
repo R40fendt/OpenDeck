@@ -30,7 +30,7 @@ pub async fn start_api_server() {
     let app = Router::new()
         .route("/set_brightness", post(set_brightness_handler));
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 7878));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 7878));
     let listener = TcpListener::bind(addr)
         .await
         .expect("failed to bind API socket");
