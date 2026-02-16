@@ -1,6 +1,7 @@
 // Prevents additional console window on Windows in release.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod api;
 mod application_watcher;
 mod elgato;
 mod events;
@@ -99,6 +100,9 @@ async fn main() {
 			frontend::settings::get_build_info
 		])
 		.setup(|app| {
+			tauri::async_runtime::spawn(async {
+				api::start_api_server().await;
+			});
 			APP_HANDLE.set(app.handle().clone()).unwrap();
 
 			#[cfg(windows)]

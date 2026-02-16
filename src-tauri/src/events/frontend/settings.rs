@@ -34,6 +34,19 @@ pub async fn set_settings(_app: tauri::AppHandle, settings: crate::store::Settin
 	Ok(())
 }
 
+pub async fn set_brightness(brightness: u8) -> Result<(), Error> {
+	let mut settings = get_settings().await?;
+	settings.brightness = brightness;
+	crate::events::outbound::devices::set_brightness(settings.brightness).await?;
+	let mut store = match crate::store::get_settings() {
+		Ok(store) => store,
+		Err(error) => return Err(error.into()),
+	};
+	store.value=settings;
+	store.save()?;
+	Ok(())
+}
+
 #[command]
 pub fn open_config_directory() -> Result<(), Error> {
 	if let Err(error) = open::that_detached(crate::shared::config_dir()) {
