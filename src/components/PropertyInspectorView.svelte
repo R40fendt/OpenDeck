@@ -75,6 +75,7 @@
 			iframeContainer.style.height = "";
 			iframeContainer.style.padding = "";
 			iframeContainer.style.zIndex = "0";
+			iframeContainer.style.maxHeight = "";
 
 			iframeClosePopup.style.display = "none";
 		}
@@ -97,6 +98,7 @@
 			iframeContainer.style.height = "100%";
 			iframeContainer.style.padding = "36px";
 			iframeContainer.style.zIndex = "20";
+			iframeContainer.style.maxHeight = "100vh";
 
 			iframeClosePopup.style.display = "block";
 		} else if (data.event == "windowClosed") {
@@ -175,11 +177,11 @@
 	}}
 />
 
-<div class="grow overflow-auto bg-white dark:bg-neutral-900 border-t dark:border-neutral-700" bind:this={iframeContainer}>
+<div class="grow min-h-64 max-h-96 overflow-auto bg-neutral-800 border-t border-neutral-700" bind:this={iframeContainer}>
 	<button
 		bind:this={iframeClosePopup}
 		on:click={() => closePopup(iframePopupsOpen[iframePopupsOpen.length - 1])}
-		class="absolute top-2 right-2 text-2xl dark:text-neutral-300 font-bold hidden"
+		class="absolute top-2 right-2 text-2xl text-neutral-300 font-bold hidden"
 	>
 		✕
 	</button>

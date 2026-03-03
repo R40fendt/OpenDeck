@@ -7,7 +7,6 @@ use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-use fs2::FileExt;
 use serde::{Deserialize, Serialize};
 
 pub trait FromAndIntoDiskValue
@@ -84,11 +83,11 @@ where
 		let backup_path = self.path.with_extension("json.bak");
 
 		// Write to temporary file
-		let mut temp_file = fs::OpenOptions::new().write(true).create(true).truncate(true).open(&temp_path)?;
-		FileExt::lock_exclusive(&temp_file)?;
+		let mut temp_file = fs::OpenOptions::new().write(true).truncate(true).create(true).open(&temp_path)?;
+		temp_file.lock()?;
 		temp_file.write_all(contents.as_bytes())?;
-		temp_file.sync_all()?;
-		FileExt::unlock(&temp_file)?;
+		temp_file.sync_data()?;
+		temp_file.unlock()?;
 		drop(temp_file);
 
 		// If main file exists, back it up
@@ -115,7 +114,6 @@ pub struct Settings {
 	pub language: String,
 	pub brightness: u8,
 	pub rotation: u16,
-	pub darktheme: bool,
 	pub background: bool,
 	pub autolaunch: bool,
 	pub updatecheck: bool,
@@ -132,7 +130,6 @@ impl Default for Settings {
 			language: "en".to_owned(),
 			brightness: 50,
 			rotation: 0,
-			darktheme: true,
 			background: !is_flatpak(),
 			autolaunch: false,
 			updatecheck: option_env!("OPENDECK_DISABLE_UPDATE_CHECK").is_none() && !is_flatpak(),

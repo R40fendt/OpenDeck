@@ -4,8 +4,6 @@
 @import "tailwindcss/preflight.css";
 @import "tailwindcss/utilities.css";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 *, ::after, ::before, ::backdrop, ::file-selector-button {
 	border-color: var(--color-gray-200, currentColor);
 }
@@ -14,17 +12,17 @@ button, input[type="radio"], input[type="checkbox"], input[type="range"], input[
 	@apply cursor-pointer;
 }
 
-select {
-	@apply appearance-none;
-	@apply px-2 py-1;
-	@apply text-sm text-neutral-700 dark:text-neutral-300;
-	@apply bg-neutral-100 dark:bg-neutral-700;
-	@apply border-2 dark:border-neutral-900 rounded-md outline-hidden;
-	@apply cursor-pointer;
-}
-
 .select-wrapper {
 	@apply relative;
+}
+
+.select-wrapper select {
+	@apply appearance-none;
+	@apply px-2 py-1;
+	@apply text-sm text-neutral-300;
+	@apply bg-neutral-700;
+	@apply border border-neutral-600 rounded-lg outline-hidden;
+	@apply cursor-pointer;
 }
 
 .select-wrapper::after {
@@ -34,14 +32,50 @@ select {
 	@apply pointer-events-none content-["_"];
 }
 
+.select-device-wrapper {
+	@apply relative;
+}
+
+.select-device-wrapper select {
+	@apply appearance-none;
+	@apply font-semibold text-xl text-neutral-200;
+	@apply outline-hidden;
+	@apply cursor-pointer;
+}
+
+.select-device-wrapper::after {
+	@apply absolute right-0.5 top-[47.5%] -translate-y-1/2;
+	@apply w-2 h-2 rotate-45;
+	@apply border-r-2 border-b-2 border-neutral-100;
+	@apply pointer-events-none content-["_"];
+}
+
+.select-profile-wrapper {
+	@apply relative;
+}
+
+.select-profile-wrapper select {
+	@apply appearance-none;
+	@apply text-neutral-400;
+	@apply outline-hidden;
+	@apply cursor-pointer;
+}
+
+.select-profile-wrapper::after {
+	@apply absolute right-0.5 top-[47.5%] -translate-y-1/2;
+	@apply w-1.5 h-1.5 rotate-45;
+	@apply border-r-2 border-b-2 border-neutral-400;
+	@apply pointer-events-none content-["_"];
+}
+
 .plugin-readme h1, .plugin-readme h2, .plugin-readme h3, .plugin-readme h4, .plugin-readme h5, .plugin-readme h6 {
-	@apply font-medium dark:text-neutral-200;
+	@apply font-medium text-neutral-200;
 }
 .plugin-readme h1:not(:first-child), .plugin-readme h2:not(:first-child), .plugin-readme h3:not(:first-child) {
 	@apply mt-5;
 }
 .plugin-readme h1, .plugin-readme h2, .plugin-readme h3 {
-	@apply mb-3 pb-1.5 border-b border-neutral-300 dark:border-neutral-600;
+	@apply mb-3 pb-1.5 border-b border-neutral-600;
 }
 .plugin-readme h1 {
 	@apply text-2xl;
@@ -53,7 +87,7 @@ select {
 	@apply text-lg;
 }
 .plugin-readme a {
-	@apply text-blue-600 dark:text-blue-400 hover:underline cursor-pointer;
+	@apply text-blue-400 hover:underline cursor-pointer;
 }
 .plugin-readme ul {
 	@apply list-disc ml-6;

@@ -161,10 +161,18 @@
 			invoke("set_application_profiles", { value: applicationProfiles });
 		}
 	}
+
+	let measure: HTMLSpanElement;
+	let selectWidth = 0;
+	$: if (value && measure) {
+		measure.textContent = value.includes("/") ? value.split("/")[1] : value;
+		selectWidth = measure.offsetWidth + 18;
+	}
 </script>
 
-<div class="select-wrapper">
-	<select bind:value class="my-1 w-full">
+<div class="select-profile-wrapper">
+	<span bind:this={measure} class="invisible fixed whitespace-pre pointer-events-none" aria-hidden="true"></span>
+	<select bind:value style:width="{selectWidth}px">
 		{#each Object.entries(folders).sort() as [id, profiles]}
 			{#if id && profiles.length}
 				<optgroup label={id}>
@@ -193,14 +201,14 @@
 />
 
 <Popup show={showPopup}>
-	<button class="mr-1 float-right text-xl dark:text-neutral-300" on:click={() => showPopup = false}>✕</button>
-	<h2 class="text-xl font-semibold dark:text-neutral-300">{device.name}</h2>
+	<button class="mr-1 float-right text-xl text-neutral-300" on:click={() => showPopup = false}>✕</button>
+	<h2 class="text-xl font-semibold text-neutral-300">{device.name}</h2>
 
 	<div class="flex flex-row mt-2 mb-1">
 		<input
 			bind:this={nameInput}
 			pattern="[a-zA-Z0-9_ ]+(\/[a-zA-Z0-9_ ]+)?"
-			class="grow p-2 dark:text-neutral-300 invalid:text-red-400 bg-neutral-200 dark:bg-neutral-700 rounded-l-md outline-hidden"
+			class="grow p-2 text-neutral-300 invalid:text-red-400 bg-neutral-700 border-l border-y border-neutral-600 rounded-l-lg outline-hidden"
 			placeholder='Profile name or "folder/name"'
 		/>
 
@@ -212,23 +220,23 @@
 				nameInput.value = "";
 				showPopup = false;
 			}}
-			class="px-4 dark:text-neutral-300 bg-neutral-300 dark:bg-neutral-900 rounded-r-md"
+			class="px-4 text-neutral-300 bg-neutral-900 hover:bg-neutral-800 transition-colors border-r border-y border-neutral-600 rounded-r-lg"
 		>
 			Create
 		</button>
 
 		<button
-			class="ml-2 px-4 flex items-center dark:text-neutral-300 bg-neutral-300 dark:bg-neutral-900 rounded-md outline-hidden"
+			class="ml-2 px-4 flex items-center text-neutral-300 bg-neutral-900 hover:bg-neutral-800 transition-colors border border-neutral-600 rounded-lg outline-hidden"
 			on:click={() => showApplicationManager = true}
 		>
 			<Browsers size={24} />
 		</button>
 	</div>
 
-	<div class="divide-y">
+	<div class="divide-y divide-neutral-500!">
 		{#each Object.entries(folders).sort() as [id, profiles]}
 			{#if id && profiles.length}
-				<h4 class="py-2 font-bold text-lg dark:text-neutral-300">{id}</h4>
+				<h4 class="py-2 font-bold text-lg text-neutral-300">{id}</h4>
 			{/if}
 			{#each profiles.sort() as profile}
 				<div class="flex flex-row items-center py-2 space-x-2" class:ml-6={id} class:pl-2={id}>
@@ -238,26 +246,26 @@
 							bind:this={renameInput}
 							bind:value={newId}
 							pattern="[a-zA-Z0-9_ ]+(\/[a-zA-Z0-9_ ]+)?"
-							class="grow px-2 py-1 dark:text-neutral-300 invalid:text-red-400 bg-neutral-200 dark:bg-neutral-700 rounded outline-hidden"
+							class="grow px-2 py-1 text-neutral-300 invalid:text-red-400 bg-neutral-700 rounded outline-hidden"
 							placeholder='Profile name or "folder/name"'
 							on:keydown={(e) => {
 								if (e.key === "Enter") saveRenamedProfile(profile);
 							}}
 						/>
 						<button on:click={() => saveRenamedProfile(profile)} title="Save">
-							<FloppyDisk size="20" class="text-green-600 dark:text-green-500" />
+							<FloppyDisk size="20" class="text-green-500" />
 						</button>
 					{:else}
-						<span class="grow dark:text-neutral-400">{id ? profile.split("/")[1] : profile}</span>
+						<span class="grow text-neutral-400">{id ? profile.split("/")[1] : profile}</span>
 						{#if profile != value}
 							<button
 								on:click={() => renamingProfile = newId = profile}
 								title="Rename"
 							>
-								<Pencil size="20" class="text-neutral-500 dark:text-neutral-400" />
+								<Pencil size="20" class="text-neutral-400" />
 							</button>
 							<button on:click={() => deleteProfile(profile)} title="Delete">
-								<Trash size="20" class="text-neutral-500 dark:text-neutral-400" />
+								<Trash size="20" class="text-neutral-400" />
 							</button>
 						{/if}
 					{/if}
@@ -268,12 +276,12 @@
 </Popup>
 
 <Popup show={showApplicationManager}>
-	<button class="mr-1 float-right text-xl dark:text-neutral-300" on:click={() => showApplicationManager = false}>✕</button>
-	<h2 class="text-xl font-semibold dark:text-neutral-300">{device.name}</h2>
-	<span class="text-sm dark:text-neutral-400">If your application isn't listed, try switching to it and back again.</span>
-	<span class="text-sm dark:text-neutral-400">The 'default profile' will activate when the focussed application has no profile associated with it.</span>
+	<button class="mr-1 float-right text-xl text-neutral-300" on:click={() => showApplicationManager = false}>✕</button>
+	<h2 class="text-xl font-semibold text-neutral-300">{device.name}</h2>
+	<span class="text-sm text-neutral-400">If your application isn't listed, try switching to it and back again.</span>
+	<span class="text-sm text-neutral-400">The 'default profile' will activate when the focussed application has no profile associated with it.</span>
 
-	<table class="w-full dark:text-neutral-300 divide-y">
+	<table class="w-full text-neutral-300 divide-y divide-neutral-500!">
 		{#each Object.entries(applicationProfiles).sort((a, b) => a[0] == "opendeck_default" ? -1 : b[0] == "opendeck_default" ? 1 : a[0].localeCompare(b[0])) as [appName, devices]}
 			{#if devices[device.id]}
 				<tr class="h-12">

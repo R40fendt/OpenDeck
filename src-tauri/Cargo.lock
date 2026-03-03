@@ -1559,16 +1559,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fs2"
-version = "0.4.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9564fc758e15025b46aa6643b1b77d047d1a56a1aea6e01002ac0c7026876213"
-dependencies = [
- "libc",
- "winapi",
-]
-
-[[package]]
 name = "fs_extra"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3293,7 +3283,7 @@ dependencies = [
 
 [[package]]
 name = "opendeck"
-version = "2.9.1"
+version = "2.10.0"
 dependencies = [
  "active-win-pos-rs",
  "anyhow",
@@ -3304,7 +3294,6 @@ dependencies = [
  "elgato-streamdeck",
  "fix-path-env",
  "font-loader",
- "fs2",
  "futures",
  "hidapi",
  "image",

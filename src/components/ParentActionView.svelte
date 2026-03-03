@@ -51,35 +51,35 @@
 	}}
 />
 
-<div class="px-6 pt-6 pb-4 dark:text-neutral-300">
+<div class="px-6 pt-6 pb-4 text-neutral-300">
 	<button class="float-right text-xl" on:click={() => $inspectedParentAction = null}>✕</button>
 	<h1 class="font-semibold text-2xl">{parentUuid == "opendeck.toggleaction" ? "Toggle Action" : "Multi Action"}</h1>
 </div>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="flex flex-col h-80 overflow-auto"
+	class="flex flex-col h-128 overflow-auto"
 	on:click={() => inspectedInstance.set(null)}
 	on:keyup={() => inspectedInstance.set(null)}
 >
 	{#each children as instance, index}
-		<div class="flex flex-row items-center mx-4 my-1 bg-neutral-100 dark:bg-neutral-800 rounded-md">
+		<div class="flex flex-row items-center mx-4 my-2 bg-neutral-700 hover:bg-neutral-600 transition-colors border border-neutral-600 rounded-lg">
 			<Key inslot={instance} context={null} active={false} scale={3 / 4} />
-			<p class="ml-4 text-xl dark:text-neutral-400">{instance.action.name}</p>
+			<p class="ml-4 text-xl text-neutral-300">{instance.action.name}</p>
 			<button
 				class="ml-auto mr-10"
 				on:click={() => removeInstance(index)}
 			>
-				<Trash size="32" class="text-neutral-500 dark:text-neutral-400" />
+				<Trash size="32" class="text-neutral-400" />
 			</button>
 		</div>
 	{/each}
 	<div
-		class="flex flex-row items-center mx-4 mt-1 mb-4 p-3 bg-neutral-100 dark:bg-neutral-800 border-2 border-dashed dark:border-neutral-700 rounded-md"
+		class="flex flex-row items-center mx-4 mt-2 mb-4 p-3 bg-neutral-700 hover:bg-neutral-600 transition-colors border border-dashed border-neutral-600 rounded-lg"
 		on:dragover={handleDragOver}
 		on:drop={handleDrop}
 	>
 		<img src="/cube.png" class="m-2 w-24 rounded-xl" alt="Add new action" />
-		<p class="ml-4 text-xl text-neutral-500">Drop actions here</p>
+		<p class="ml-4 text-xl text-neutral-400">Drop actions here</p>
 	</div>
 </div>
